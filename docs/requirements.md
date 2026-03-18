@@ -158,7 +158,8 @@ Daily Breakdown (2026-03-15 ~ 2026-03-17)
   - 共有設定ファイル (`~/.aws/config`)
   - AWS SSO / IAM Identity Center
   - IAM ロール (EC2/ECS 上での実行時)
-- リージョンは SDK のデフォルト解決順に従う
+- `--profile` フラグで AWS プロファイルを上書き指定可能
+- `--region` フラグで AWS リージョンを上書き指定可能 (デフォルト: `us-east-1`)
 
 ### 3.6 ロググループ指定
 - デフォルトのロググループ名: `bedrock/modelinvocations`
@@ -290,6 +291,8 @@ bedrock-usage --log-group my-bedrock-logs
 | `--user` | `-u` | IAM ユーザー/ロール ARN でフィルタ (部分一致) |
 | `--by-user` | | ユーザー別の内訳表示 |
 | `--log-group` | `-l` | CloudWatch Logs のロググループ名 |
+| `--profile` | | AWS プロファイル名 |
+| `--region` | | AWS リージョン (デフォルト: `us-east-1`) |
 | `--help` | `-h` | ヘルプ表示 |
 | `--version` | `-v` | バージョン表示 |
 
@@ -364,7 +367,6 @@ bedrock-usage/
 - `--by-user` 表示時のモデル別クロス集計による料金計算対応
 - `--json` フラグによる JSON 出力
 - `--from` / `--to` による任意日付範囲指定
-- `--profile` / `--region` フラグによる AWS 設定上書き
 - 設定ファイルによるカスタム単価の上書き (`~/.bedrock-usage/pricing.yaml`)
 - CSV エクスポート
 - 予算アラート / 閾値超過の警告表示

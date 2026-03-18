@@ -20,6 +20,8 @@ var (
 	user     string
 	byUser   bool
 	logGroup string
+	profile  string
+	region   string
 
 	version = "dev"
 )
@@ -38,6 +40,8 @@ func NewRootCmd() *cobra.Command {
 	rootCmd.Flags().StringVarP(&user, "user", "u", "", "IAMユーザー/ロールでフィルタ (部分一致)")
 	rootCmd.Flags().BoolVar(&byUser, "by-user", false, "ユーザー別の内訳を表示")
 	rootCmd.Flags().StringVarP(&logGroup, "log-group", "l", "bedrock/modelinvocations", "CloudWatch Logsのロググループ名")
+	rootCmd.Flags().StringVar(&profile, "profile", "", "AWS プロファイル名")
+	rootCmd.Flags().StringVar(&region, "region", "us-east-1", "AWS リージョン")
 
 	return rootCmd
 }
@@ -50,7 +54,15 @@ func run(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	cfg, err := config.LoadDefaultConfig(ctx)
+	var opts []func(*config.LoadOptions) error
+	if profile != "" {
+		opts = append(opts, config.WithSharedConfigProfile(profile))
+	}
+	if region != "" {
+		opts = append(opts, config.WithRegion(region))
+	}
+
+	cfg, err := config.LoadDefaultConfig(ctx, opts...)
 	if err != nil {
 		return fmt.Errorf("AWS設定の読み込みに失敗しました: %w", err)
 	}
