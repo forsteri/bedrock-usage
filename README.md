@@ -156,10 +156,12 @@ Daily Breakdown (2026-03-15 ~ 2026-03-17)
 | `--log-group` | `-l` | `bedrock/modelinvocations` | CloudWatch Logs のロググループ名 |
 | `--profile` | | | AWS プロファイル名 |
 | `--region` | | `us-east-1` | AWS リージョン |
+| `--prices` | | `false` | 内蔵の単価テーブルを表示 |
 
 ## 料金計算について
 
 - モデルごとの単価がバイナリに埋め込まれており、トークン数から予想料金を算出します
+- `--prices` フラグで現在の内蔵単価テーブルを確認できます
 - `--by-user` 表示時はモデル情報を含まないため、料金は `$0.00` と表示されます
 - 料金はあくまで概算です。正確な請求額は AWS Billing を確認してください
 

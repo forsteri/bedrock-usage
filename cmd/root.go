@@ -14,14 +14,15 @@ import (
 )
 
 var (
-	period   string
-	daily    bool
-	model    string
-	user     string
-	byUser   bool
-	logGroup string
-	profile  string
-	region   string
+	period     string
+	daily      bool
+	model      string
+	user       string
+	byUser     bool
+	logGroup   string
+	profile    string
+	region     string
+	showPrices bool
 
 	version = "dev"
 )
@@ -42,11 +43,17 @@ func NewRootCmd() *cobra.Command {
 	rootCmd.Flags().StringVarP(&logGroup, "log-group", "l", "bedrock/modelinvocations", "CloudWatch Logsのロググループ名")
 	rootCmd.Flags().StringVar(&profile, "profile", "", "AWS プロファイル名")
 	rootCmd.Flags().StringVar(&region, "region", "us-east-1", "AWS リージョン")
+	rootCmd.Flags().BoolVar(&showPrices, "prices", false, "内蔵の単価テーブルを表示")
 
 	return rootCmd
 }
 
 func run(cmd *cobra.Command, args []string) error {
+	if showPrices {
+		display.RenderPrices()
+		return nil
+	}
+
 	ctx := context.Background()
 
 	startTime, endTime, err := resolvePeriod(period)

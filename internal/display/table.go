@@ -110,6 +110,32 @@ func RenderDaily(records []query.UsageRecord, title string, modelFilter string) 
 	fmt.Println()
 }
 
+func RenderPrices() {
+	fmt.Println()
+	fmt.Println("Built-in Pricing Table (per 1K tokens)")
+	fmt.Println()
+
+	table := tablewriter.NewTable(os.Stdout,
+		tablewriter.WithConfig(tablewriter.Config{
+			Header: tw.CellConfig{Alignment: tw.CellAlignment{Global: tw.AlignLeft}},
+			Row:    tw.CellConfig{Alignment: tw.CellAlignment{Global: tw.AlignRight}},
+		}),
+	)
+
+	table.Header([]string{"Match Key", "Input", "Output"})
+
+	for _, entry := range pricing.DefaultPrices {
+		table.Append([]string{
+			entry.Prefix,
+			fmt.Sprintf("$%.4f", entry.Price.InputPer1KTokens),
+			fmt.Sprintf("$%.5f", entry.Price.OutputPer1KTokens),
+		})
+	}
+
+	table.Render()
+	fmt.Println()
+}
+
 func formatInt(n int64) string {
 	if n == 0 {
 		return "0"
